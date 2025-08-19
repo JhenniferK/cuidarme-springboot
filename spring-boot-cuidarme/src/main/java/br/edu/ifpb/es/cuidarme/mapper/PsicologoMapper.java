@@ -18,11 +18,12 @@ public class PsicologoMapper {
     }
 
     public PsicologoResponseDTO from(Psicologo from) {
-        PsicologoResponseDTO responseDTO = new PsicologoResponseDTO();
-        responseDTO.setNome(from.getNome());
-        responseDTO.setEmail(from.getEmail());
-        responseDTO.setSenha(from.getSenha());
-        return responseDTO;
+        PsicologoResponseDTO psicologoResponseDTO = new PsicologoResponseDTO();
+        psicologoResponseDTO.setNome(from.getNome());
+        psicologoResponseDTO.setLookupId(from.getLookupId());
+        psicologoResponseDTO.setEmail(from.getEmail());
+        psicologoResponseDTO.setSenha(from.getSenha());
+        return psicologoResponseDTO;
     }
 
 }

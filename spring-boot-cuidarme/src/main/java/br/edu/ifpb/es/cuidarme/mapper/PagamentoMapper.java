@@ -20,6 +20,7 @@ public class PagamentoMapper {
 
     public PagamentoResponseDTO from(Pagamento from) {
         PagamentoResponseDTO pagamentoResponseDTO = new PagamentoResponseDTO();
+        pagamentoResponseDTO.setLookupId(from.getLookupId());
         pagamentoResponseDTO.setData(from.getData());
         pagamentoResponseDTO.setValor(from.getValor());
         pagamentoResponseDTO.setMetodo(from.getMetodo());

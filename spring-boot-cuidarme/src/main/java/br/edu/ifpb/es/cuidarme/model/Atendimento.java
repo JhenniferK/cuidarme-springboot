@@ -34,6 +34,11 @@ public class Atendimento {
 
     @Setter
     @Getter
+    @Column(name = "TIPO", nullable = false)
+    private String tipo;
+
+    @Setter
+    @Getter
     @Column(name = "LOCALIDADE", nullable = false)
     private String localidade;
 
@@ -41,7 +46,7 @@ public class Atendimento {
     @Getter
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
-    private StatusAtendimento statusAtendimento;
+    private StatusAtendimento status;
 
     @Setter
     @Getter
@@ -66,21 +71,23 @@ public class Atendimento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Atendimento that = (Atendimento) o;
-        return Objects.equals(id, that.id) && Objects.equals(data, that.data) && Objects.equals(localidade, that.localidade) && Objects.equals(statusAtendimento, that.statusAtendimento);
+        return Objects.equals(id, that.id) && Objects.equals(lookupId, that.lookupId) && Objects.equals(data, that.data) && Objects.equals(tipo, that.tipo) && Objects.equals(localidade, that.localidade) && status == that.status && Objects.equals(psicologo, that.psicologo) && Objects.equals(paciente, that.paciente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, data, localidade, statusAtendimento);
+        return Objects.hash(id, lookupId, data, tipo, localidade, status, psicologo, paciente);
     }
 
     @Override
     public String toString() {
         return "Atendimento{" +
                 "id=" + id +
+                ", lookupId=" + lookupId +
                 ", data=" + data +
+                ", tipo='" + tipo + '\'' +
                 ", localidade='" + localidade + '\'' +
-                ", agendado=" + statusAtendimento +
+                ", status=" + status +
                 ", psicologo=" + psicologo +
                 ", paciente=" + paciente +
                 '}';

@@ -47,7 +47,7 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
     }
 
     @Override
-    @PostMapping
+    @PostMapping("/salvar")
     public ResponseEntity<AtendimentoResponseDTO> adicionar(@RequestBody @Valid AtendimentoSalvarRequestDTO dto) throws SistemaException {
         Atendimento objNovo = atendimentoMapper.from(dto);
         Atendimento objCriado = atendimentoService.criar(objNovo);
@@ -58,7 +58,6 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
     @Override
     @GetMapping("/{lookupId}")
     public ResponseEntity<AtendimentoResponseDTO> recuperarPor(@PathVariable UUID lookupId) throws SistemaException {
-        // Recuperar
         Atendimento obj = validarExiste(lookupId);
         AtendimentoResponseDTO resultado = atendimentoMapper.from(obj);
         return new ResponseEntity<>(resultado, HttpStatus.OK);
@@ -70,7 +69,7 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
         Atendimento objExistente = validarExiste(lookupId);
         objExistente.setData(dto.getData());
         objExistente.setLocalidade(dto.getLocalidade());
-        objExistente.setStatusAtendimento(dto.getStatus());
+        objExistente.setStatus(dto.getStatus());
         Atendimento objAtualizado = atendimentoService.atualizar(objExistente);
         AtendimentoResponseDTO resultado = atendimentoMapper.from(objAtualizado);
 

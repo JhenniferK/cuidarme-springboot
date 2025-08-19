@@ -5,11 +5,13 @@ import br.edu.ifpb.es.cuidarme.model.Endereco;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 public class PacienteResponseDTO {
 
         private Long id;
+        private UUID lookupId;
         private String nome;
         private String cpf;
         private String rg;

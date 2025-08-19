@@ -11,6 +11,8 @@ import java.util.UUID;
 public class AtendimentoResponseDTO {
 
     private Long id;
+    private UUID lookupId;
+    private String tipo;
     private LocalDateTime data;
     private String localidade;
     private StatusAtendimento status;

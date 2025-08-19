@@ -19,6 +19,7 @@ public class ProntuarioMapper {
 
     public ProntuarioResponseDTO from(Prontuario from) {
         ProntuarioResponseDTO prontuario = new ProntuarioResponseDTO();
+        prontuario.setLookupId(from.getLookupId());
         prontuario.setDescricao(from.getDescricao());
         prontuario.setDataRegistro(LocalDateTime.from(from.getDataRegistro()));
         return prontuario;

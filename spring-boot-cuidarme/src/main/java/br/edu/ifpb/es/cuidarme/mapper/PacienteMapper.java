@@ -30,6 +30,7 @@ public class PacienteMapper {
     public PacienteResponseDTO from(Paciente from) {
         PacienteResponseDTO pacienteResponseDTO = new PacienteResponseDTO();
         pacienteResponseDTO.setId(from.getId());
+        pacienteResponseDTO.setLookupId(from.getLookupId());
         pacienteResponseDTO.setNome(from.getNome());
         pacienteResponseDTO.setCpf(from.getCpf());
         pacienteResponseDTO.setRg(from.getRg());

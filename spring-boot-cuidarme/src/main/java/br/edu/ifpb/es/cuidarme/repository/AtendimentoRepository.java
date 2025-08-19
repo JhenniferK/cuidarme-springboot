@@ -21,8 +21,9 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
     @Query("""
     SELECT a FROM Atendimento a
     WHERE (:#{#dto.data} IS NULL OR FUNCTION('DATE', a.data) = :#{#dto.data})
+      AND (:#{#dto.tipo} IS NULL OR a.tipo = :#{#dto.tipo})
       AND (:#{#dto.localidade} IS NULL OR a.localidade = :#{#dto.localidade})
-      AND (:#{#dto.status} IS NULL OR a.statusAtendimento = :#{#dto.status})
+      AND (:#{#dto.status} IS NULL OR a.status = :#{#dto.status})
 """)
     Page<Atendimento> buscarPor(@Param("dto") AtendimentoBuscarDTO dto, Pageable pageable);
 

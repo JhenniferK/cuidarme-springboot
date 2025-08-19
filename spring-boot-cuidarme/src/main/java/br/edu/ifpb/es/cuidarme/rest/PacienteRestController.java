@@ -78,6 +78,7 @@ public class PacienteRestController implements PacienteRestControllerApi {
         objExistente.setTelefone(dto.getTelefone());
         objExistente.setEnderecoPessoal(dto.getEnderecoPessoal());
         objExistente.setEnderecoTrabalho(dto.getEnderecoTrabalho());
+        objExistente.setInfoAdicionais(dto.getInfoAdicionais());
         objExistente.setContatoEmergencia(dto.getContatoEmergencia());
         Paciente objAtualizado = pacienteService.atualizar(objExistente);
         PacienteResponseDTO resultado = pacienteMapper.from(objAtualizado);
