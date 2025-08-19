@@ -38,7 +38,7 @@ public class PagamentoRestController implements PagamentoRestControllerApi {
     private PagamentoService pagamentoService;
 
     @Override
-    @GetMapping("/lista")
+    @GetMapping("/listar")
     public ResponseEntity<List<PagamentoResponseDTO>> listar() throws SistemaException {
         List<Pagamento> objs = pagamentoService.recuperarTodos();
         List<PagamentoResponseDTO> resultado = objs.stream()

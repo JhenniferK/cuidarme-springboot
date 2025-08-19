@@ -18,12 +18,7 @@ import java.util.UUID;
 @Table(name = "Atendimento")
 public class Atendimento {
 
-    @Setter
-    @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(nullable = false, unique = true)
     private UUID lookupId;
 
@@ -31,11 +26,6 @@ public class Atendimento {
     @Getter
     @Column(name = "DATA", nullable = false)
     private LocalDateTime data;
-
-    @Setter
-    @Getter
-    @Column(name = "TIPO", nullable = false)
-    private String tipo;
 
     @Setter
     @Getter
@@ -63,7 +53,6 @@ public class Atendimento {
     @PrePersist
     private void init() {
         this.lookupId = UUID.randomUUID();
-        this.data = LocalDateTime.now();
     }
 
     @Override
@@ -71,21 +60,19 @@ public class Atendimento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Atendimento that = (Atendimento) o;
-        return Objects.equals(id, that.id) && Objects.equals(lookupId, that.lookupId) && Objects.equals(data, that.data) && Objects.equals(tipo, that.tipo) && Objects.equals(localidade, that.localidade) && status == that.status && Objects.equals(psicologo, that.psicologo) && Objects.equals(paciente, that.paciente);
+        return Objects.equals(lookupId, that.lookupId) && Objects.equals(data, that.data) && Objects.equals(localidade, that.localidade) && status == that.status && Objects.equals(psicologo, that.psicologo) && Objects.equals(paciente, that.paciente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lookupId, data, tipo, localidade, status, psicologo, paciente);
+        return Objects.hash(lookupId, data, localidade, status, psicologo, paciente);
     }
 
     @Override
     public String toString() {
         return "Atendimento{" +
-                "id=" + id +
                 ", lookupId=" + lookupId +
                 ", data=" + data +
-                ", tipo='" + tipo + '\'' +
                 ", localidade='" + localidade + '\'' +
                 ", status=" + status +
                 ", psicologo=" + psicologo +

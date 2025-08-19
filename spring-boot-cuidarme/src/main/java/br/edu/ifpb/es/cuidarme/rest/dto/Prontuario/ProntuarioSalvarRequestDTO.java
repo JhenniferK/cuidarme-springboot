@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 public class ProntuarioSalvarRequestDTO {
 
-    private Long id;
     @NotBlank
     private String descricao;
     @NotBlank

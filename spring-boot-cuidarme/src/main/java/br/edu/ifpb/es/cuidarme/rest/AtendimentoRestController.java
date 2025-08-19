@@ -37,7 +37,7 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
     private AtendimentoService atendimentoService;
 
     @Override
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<AtendimentoResponseDTO>> listar() throws SistemaException {
         List<Atendimento> objs = atendimentoService.recuperarTodos();
         List<AtendimentoResponseDTO> resultado = objs.stream()
@@ -64,7 +64,7 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
     }
 
     @Override
-    @PatchMapping("/{lookupId}")
+    @PatchMapping("atualizar/{lookupId}")
     public ResponseEntity<AtendimentoResponseDTO> atualizar(@PathVariable UUID lookupId, @RequestBody @Valid AtendimentoSalvarRequestDTO dto) throws SistemaException {
         Atendimento objExistente = validarExiste(lookupId);
         objExistente.setData(dto.getData());
@@ -77,7 +77,7 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
     }
 
     @Override
-    @DeleteMapping("/{lookupId}")
+    @DeleteMapping("remover/{lookupId}")
     public ResponseEntity<Void> remover(@PathVariable UUID lookupId) throws SistemaException {
         Atendimento obj = validarExiste(lookupId);
         atendimentoService.remover(obj);

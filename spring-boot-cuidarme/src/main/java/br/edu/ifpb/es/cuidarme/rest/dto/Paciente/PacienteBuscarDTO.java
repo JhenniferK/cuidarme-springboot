@@ -1,13 +1,14 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Paciente;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDate;
 
 @Data
 public class PacienteBuscarDTO {
 
-    private Long id;
+    private UUID lookupId;
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;

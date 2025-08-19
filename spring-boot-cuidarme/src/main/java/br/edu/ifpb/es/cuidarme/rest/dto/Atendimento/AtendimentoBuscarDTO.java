@@ -2,15 +2,15 @@ package br.edu.ifpb.es.cuidarme.rest.dto.Atendimento;
 
 import br.edu.ifpb.es.cuidarme.model.StatusAtendimento;
 import lombok.Data;
+import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
 
 @Data
 public class AtendimentoBuscarDTO {
 
-    private Long id;
+    private UUID lookupId;
     private LocalDateTime data;
-    private String tipo;
     private String localidade;
     private StatusAtendimento status;
     private Integer numeroPagina = 0;

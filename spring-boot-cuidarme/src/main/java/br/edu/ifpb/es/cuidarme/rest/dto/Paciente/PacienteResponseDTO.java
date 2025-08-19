@@ -10,7 +10,6 @@ import java.util.UUID;
 @Data
 public class PacienteResponseDTO {
 
-        private Long id;
         private UUID lookupId;
         private String nome;
         private String cpf;

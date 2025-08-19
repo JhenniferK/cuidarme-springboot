@@ -10,7 +10,6 @@ public class PsicologoMapper {
 
     public Psicologo from(PsicologoSalvarRequestDTO from) {
         Psicologo psicologo = new Psicologo();
-        psicologo.setId(from.getId());
         psicologo.setNome(from.getNome());
         psicologo.setEmail(from.getEmail());
         psicologo.setSenha(from.getSenha());

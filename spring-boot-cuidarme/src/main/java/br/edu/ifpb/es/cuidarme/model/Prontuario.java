@@ -18,12 +18,7 @@ import java.util.UUID;
 @Table(name = "Prontuario")
 public class Prontuario {
 
-    @Setter
-    @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Setter
     @Getter
     @Column(nullable = false, unique = true)
@@ -62,18 +57,17 @@ public class Prontuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Prontuario that = (Prontuario) o;
-        return Objects.equals(id, that.id) && Objects.equals(descricao, that.descricao) && Objects.equals(dataRegistro, that.dataRegistro) && Objects.equals(psicologo, that.psicologo) && Objects.equals(paciente, that.paciente);
+        return Objects.equals(descricao, that.descricao) && Objects.equals(dataRegistro, that.dataRegistro) && Objects.equals(psicologo, that.psicologo) && Objects.equals(paciente, that.paciente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, descricao, dataRegistro, psicologo, paciente);
+        return Objects.hash(descricao, dataRegistro, psicologo, paciente);
     }
 
     @Override
     public String toString() {
         return "Prontuario{" +
-                "id=" + id +
                 ", descricao='" + descricao + '\'' +
                 ", dataRegistro=" + dataRegistro +
                 ", psicologo=" + psicologo +

@@ -8,7 +8,6 @@ import java.util.UUID;
 @Data
 public class ProntuarioResponseDTO {
 
-    private Long id;
     private UUID lookupId;
     private String descricao;
     private LocalDateTime dataRegistro;

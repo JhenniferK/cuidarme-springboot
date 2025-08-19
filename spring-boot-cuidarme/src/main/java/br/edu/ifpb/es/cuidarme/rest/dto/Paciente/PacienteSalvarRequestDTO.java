@@ -2,6 +2,7 @@ package br.edu.ifpb.es.cuidarme.rest.dto.Paciente;
 
 import br.edu.ifpb.es.cuidarme.model.ContatoEmergencia;
 import br.edu.ifpb.es.cuidarme.model.Endereco;
+import br.edu.ifpb.es.cuidarme.model.Psicologo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
 @Data
 public class PacienteSalvarRequestDTO {
 
-    private Long id;
     @NotBlank
     private String nome;
     @NotBlank
@@ -38,5 +38,7 @@ public class PacienteSalvarRequestDTO {
     private String infoAdicionais;
 
     private ContatoEmergencia contatoEmergencia;
+
+    private Psicologo psicologo;
 
 }

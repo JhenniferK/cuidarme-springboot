@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Data
 public class PagamentoSalvarRequestDTO {
 
-    private Long id;
     @NotBlank
     private int valor;
     @NotBlank

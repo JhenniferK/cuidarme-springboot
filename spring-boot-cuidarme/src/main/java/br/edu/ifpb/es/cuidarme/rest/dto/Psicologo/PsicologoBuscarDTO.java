@@ -1,11 +1,12 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Psicologo;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.UUID;
 
 @Data
 public class PsicologoBuscarDTO {
 
-    private Long id;
+    private UUID lookupId;
     private String nome;
     private String email;
     private String senha;

@@ -18,12 +18,7 @@ import java.util.UUID;
 @Table(name = "Pagamento")
 public class Pagamento {
 
-    @Setter
-    @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Setter
     @Getter
     @Column(nullable = false, unique = true)
@@ -67,18 +62,17 @@ public class Pagamento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pagamento pagamento = (Pagamento) o;
-        return Objects.equals(id, pagamento.id) && Objects.equals(valor, pagamento.valor) && metodo == pagamento.metodo && Objects.equals(statusPagamento, pagamento.statusPagamento) && Objects.equals(data, pagamento.data);
+        return Objects.equals(valor, pagamento.valor) && metodo == pagamento.metodo && Objects.equals(statusPagamento, pagamento.statusPagamento) && Objects.equals(data, pagamento.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, valor, metodo, statusPagamento, data);
+        return Objects.hash(valor, metodo, statusPagamento, data);
     }
 
     @Override
     public String toString() {
         return "Pagamento{" +
-                "id=" + id +
                 ", valor=" + valor +
                 ", metodo='" + metodo + '\'' +
                 ", status=" + statusPagamento +

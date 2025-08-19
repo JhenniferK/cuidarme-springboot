@@ -10,7 +10,6 @@ import java.util.UUID;
 @Data
 public class PagamentoResponseDTO {
 
-    private Long id;
     private UUID lookupId;
     private int valor;
     private LocalDateTime data;

@@ -19,12 +19,7 @@ import java.util.UUID;
 @Table(name = "Psicologo")
 public class Psicologo {
 
-    @Setter
-    @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Setter
     @Getter
     @Column(nullable = false, unique = true)
@@ -47,6 +42,11 @@ public class Psicologo {
 
     @Setter
     @Getter
+    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Paciente> pacientes = new ArrayList<>();
+
+    @Setter
+    @Getter
     @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Atendimento> atendimentos = new ArrayList<>();
 
@@ -65,22 +65,23 @@ public class Psicologo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Psicologo psicologo = (Psicologo) o;
-        return Objects.equals(id, psicologo.id) && Objects.equals(nome, psicologo.nome) && Objects.equals(email, psicologo.email) && Objects.equals(senha, psicologo.senha) && Objects.equals(atendimentos, psicologo.atendimentos) && Objects.equals(prontuarios, psicologo.prontuarios);
+        return Objects.equals(lookupId, psicologo.lookupId) && Objects.equals(nome, psicologo.nome) && Objects.equals(email, psicologo.email) && Objects.equals(senha, psicologo.senha) && Objects.equals(pacientes, psicologo.pacientes) && Objects.equals(atendimentos, psicologo.atendimentos) && Objects.equals(prontuarios, psicologo.prontuarios);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, email, senha, atendimentos, prontuarios);
+        return Objects.hash(lookupId, nome, email, senha, pacientes, atendimentos, prontuarios);
     }
 
     @Override
     public String toString() {
         return "Psicologo{" +
-                "crp=" + id +
+                "lookupId=" + lookupId +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
-                ", Atendimentos=" + atendimentos + '\'' +
+                ", pacientes=" + pacientes +
+                ", atendimentos=" + atendimentos +
                 ", prontuarios=" + prontuarios +
                 '}';
     }

@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class PsicologoSalvarRequestDTO {
 
-    private Long id;
     @NotBlank
     private String nome;
     @NotBlank

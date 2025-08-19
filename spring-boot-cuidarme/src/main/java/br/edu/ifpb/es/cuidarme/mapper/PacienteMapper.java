@@ -10,7 +10,6 @@ public class PacienteMapper {
 
     public Paciente from(PacienteSalvarRequestDTO from) {
         Paciente paciente = new Paciente();
-        paciente.setId(from.getId());
         paciente.setNome(from.getNome());
         paciente.setCpf(from.getCpf());
         paciente.setRg(from.getRg());
@@ -24,12 +23,12 @@ public class PacienteMapper {
         paciente.setEnderecoTrabalho(from.getEnderecoTrabalho());
         paciente.setInfoAdicionais(from.getInfoAdicionais());
         paciente.setContatoEmergencia(from.getContatoEmergencia());
+        paciente.setPsicologo(from.getPsicologo());
         return paciente;
     }
 
     public PacienteResponseDTO from(Paciente from) {
         PacienteResponseDTO pacienteResponseDTO = new PacienteResponseDTO();
-        pacienteResponseDTO.setId(from.getId());
         pacienteResponseDTO.setLookupId(from.getLookupId());
         pacienteResponseDTO.setNome(from.getNome());
         pacienteResponseDTO.setCpf(from.getCpf());

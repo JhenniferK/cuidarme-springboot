@@ -20,12 +20,7 @@ import java.util.UUID;
 @Table(name = "Paciente")
 public class Paciente {
 
-    @Setter
-    @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(nullable = false, unique = true)
     private UUID lookupId;
 
@@ -114,6 +109,10 @@ public class Paciente {
     })
     private ContatoEmergencia contatoEmergencia;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "psicologo_lookup_id", referencedColumnName = "lookupId")
+    private Psicologo psicologo;
+
     @Setter
     @Getter
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -139,19 +138,18 @@ public class Paciente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Paciente paciente = (Paciente) o;
-        return Objects.equals(id, paciente.id) && Objects.equals(lookupId, paciente.lookupId) && Objects.equals(nome, paciente.nome) && Objects.equals(cpf, paciente.cpf) && Objects.equals(rg, paciente.rg) && Objects.equals(dataNascimento, paciente.dataNascimento) && Objects.equals(sexo, paciente.sexo) && Objects.equals(estadoCivil, paciente.estadoCivil) && Objects.equals(grauInstrucao, paciente.grauInstrucao) && Objects.equals(profissao, paciente.profissao) && Objects.equals(enderecoPessoal, paciente.enderecoPessoal) && Objects.equals(telefone, paciente.telefone) && Objects.equals(enderecoTrabalho, paciente.enderecoTrabalho) && Objects.equals(infoAdicionais, paciente.infoAdicionais) && Objects.equals(contatoEmergencia, paciente.contatoEmergencia) && Objects.equals(atendimentos, paciente.atendimentos) && Objects.equals(prontuarios, paciente.prontuarios) && Objects.equals(pagamentos, paciente.pagamentos);
+        return Objects.equals(lookupId, paciente.lookupId) && Objects.equals(nome, paciente.nome) && Objects.equals(cpf, paciente.cpf) && Objects.equals(rg, paciente.rg) && Objects.equals(dataNascimento, paciente.dataNascimento) && Objects.equals(sexo, paciente.sexo) && Objects.equals(estadoCivil, paciente.estadoCivil) && Objects.equals(grauInstrucao, paciente.grauInstrucao) && Objects.equals(profissao, paciente.profissao) && Objects.equals(enderecoPessoal, paciente.enderecoPessoal) && Objects.equals(telefone, paciente.telefone) && Objects.equals(enderecoTrabalho, paciente.enderecoTrabalho) && Objects.equals(infoAdicionais, paciente.infoAdicionais) && Objects.equals(contatoEmergencia, paciente.contatoEmergencia) && Objects.equals(psicologo, paciente.psicologo) && Objects.equals(atendimentos, paciente.atendimentos) && Objects.equals(prontuarios, paciente.prontuarios) && Objects.equals(pagamentos, paciente.pagamentos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lookupId, nome, cpf, rg, dataNascimento, sexo, estadoCivil, grauInstrucao, profissao, enderecoPessoal, telefone, enderecoTrabalho, infoAdicionais, contatoEmergencia, atendimentos, prontuarios, pagamentos);
+        return Objects.hash(lookupId, nome, cpf, rg, dataNascimento, sexo, estadoCivil, grauInstrucao, profissao, enderecoPessoal, telefone, enderecoTrabalho, infoAdicionais, contatoEmergencia, psicologo, atendimentos, prontuarios, pagamentos);
     }
 
     @Override
     public String toString() {
         return "Paciente{" +
-                "id=" + id +
-                ", lookupId=" + lookupId +
+                "lookupId=" + lookupId +
                 ", nome='" + nome + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", rg='" + rg + '\'' +
@@ -165,6 +163,7 @@ public class Paciente {
                 ", enderecoTrabalho=" + enderecoTrabalho +
                 ", infoAdicionais='" + infoAdicionais + '\'' +
                 ", contatoEmergencia=" + contatoEmergencia +
+                ", psicologo=" + psicologo +
                 ", atendimentos=" + atendimentos +
                 ", prontuarios=" + prontuarios +
                 ", pagamentos=" + pagamentos +
