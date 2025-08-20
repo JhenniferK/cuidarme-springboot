@@ -1,16 +1,18 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Pagamento;
 
 import br.edu.ifpb.es.cuidarme.model.Metodo;
+import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteIdDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 public class PagamentoSalvarRequestDTO {
 
-    @NotBlank
+    @NotNull
     private int valor;
     @NotNull
     private LocalDateTime data;
@@ -18,5 +20,7 @@ public class PagamentoSalvarRequestDTO {
     private Metodo metodo;
     @NotBlank
     private String status;
+    @NotNull
+    private PacienteIdDTO paciente;
 
 }

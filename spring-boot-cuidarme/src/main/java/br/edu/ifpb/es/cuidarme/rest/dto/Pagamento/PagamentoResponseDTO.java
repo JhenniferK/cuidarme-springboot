@@ -11,7 +11,7 @@ import java.util.UUID;
 public class PagamentoResponseDTO {
 
     private UUID lookupId;
-    private int valor;
+    private double valor;
     private LocalDateTime data;
     private Metodo metodo;
     private StatusPagamento status;

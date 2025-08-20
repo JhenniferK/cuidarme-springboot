@@ -12,6 +12,7 @@ import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoBuscarDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoSalvarRequestDTO;
 import br.edu.ifpb.es.cuidarme.service.PagamentoService;
+import br.edu.ifpb.es.cuidarme.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,12 @@ public class PagamentoRestController implements PagamentoRestControllerApi {
     @Autowired
     private PagamentoService pagamentoService;
 
+    @Autowired
+    private PacienteService pacienteService;
+
     @Override
     @GetMapping("/listar")
-    public ResponseEntity<List<PagamentoResponseDTO>> listar() {
+    public ResponseEntity<List<PagamentoResponseDTO>> listar() throws SistemaException {
         List<Pagamento> objs = pagamentoService.recuperarTodos();
         List<PagamentoResponseDTO> resultado = objs.stream()
                 .map(pagamentoMapper::from)
@@ -74,7 +78,6 @@ public class PagamentoRestController implements PagamentoRestControllerApi {
         objExistente.setStatusPagamento(StatusPagamento.valueOf(dto.getStatus()));
         Pagamento objAtualizado = pagamentoService.atualizar(objExistente);
         PagamentoResponseDTO resultado = pagamentoMapper.from(objAtualizado);
-
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
@@ -90,17 +93,15 @@ public class PagamentoRestController implements PagamentoRestControllerApi {
     @GetMapping("/buscar")
     public ResponseEntity<Page<PagamentoResponseDTO>> buscar(PagamentoBuscarDTO dto) throws SistemaException {
         Page<Pagamento> objs = pagamentoService.buscar(dto);
-
         Page<PagamentoResponseDTO> resultado = objs
                 .map(pagamentoMapper::from);
-
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    private Pagamento validarExiste(UUID lookupId) throws SistemaException {
+    private Pagamento validarExiste(UUID lookupId) {
         Optional<Pagamento> opt = pagamentoService.buscarPor(lookupId);
-        if (opt.isEmpty()) {
-            throw new SistemaException("Pagamento com o ID " + lookupId + " não foi encontrado.");
+        if (!opt.isPresent()) {
+            throw new IllegalArgumentException(String.format("Entidade 'Pagamento' de lookupId '%s' não foi encontrada!", lookupId));
         }
         return opt.get();
     }

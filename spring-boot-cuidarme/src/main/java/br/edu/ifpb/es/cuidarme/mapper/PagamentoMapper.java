@@ -1,20 +1,32 @@
 package br.edu.ifpb.es.cuidarme.mapper;
 
+import br.edu.ifpb.es.cuidarme.model.Paciente;
 import br.edu.ifpb.es.cuidarme.model.Pagamento;
 import br.edu.ifpb.es.cuidarme.model.StatusPagamento;
 import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoSalvarRequestDTO;
+import br.edu.ifpb.es.cuidarme.service.PacienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PagamentoMapper {
 
+    @Autowired
+    private PacienteService pacienteService;
+
     public Pagamento from(PagamentoSalvarRequestDTO from) {
+        var pacienteId = from.getPaciente().getLookupId();
+
+        Paciente paciente = pacienteService.buscarPor(pacienteId)
+                .orElseThrow(() -> new IllegalArgumentException("Paciente com lookupId " + pacienteId + " não encontrado."));
+
         Pagamento pagamento = new Pagamento();
         pagamento.setData(from.getData());
         pagamento.setValor(from.getValor());
         pagamento.setMetodo(from.getMetodo());
         pagamento.setStatusPagamento(StatusPagamento.valueOf(from.getStatus()));
+        pagamento.setPaciente(paciente);
         return pagamento;
     }
 
