@@ -32,7 +32,7 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
 
     @Override
     @GetMapping("/listar")
-    public ResponseEntity<List<AtendimentoResponseDTO>> listar() throws SistemaException {
+    public ResponseEntity<List<AtendimentoResponseDTO>> listar() {
         List<Atendimento> objs = atendimentoService.recuperarTodos();
         List<AtendimentoResponseDTO> resultado = objs.stream()
                 .map(atendimentoMapper::from)
@@ -66,7 +66,6 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
         objExistente.setStatus(dto.getStatus());
         Atendimento objAtualizado = atendimentoService.atualizar(objExistente);
         AtendimentoResponseDTO resultado = atendimentoMapper.from(objAtualizado);
-
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
@@ -88,17 +87,15 @@ public class AtendimentoRestController implements AtendimentoRestControllerApi {
     @GetMapping("/buscar")
     public ResponseEntity<Page<AtendimentoResponseDTO>> buscar(AtendimentoBuscarDTO dto) throws SistemaException {
         Page<Atendimento> objs = atendimentoService.buscar(dto);
-
         Page<AtendimentoResponseDTO> resultado = objs
                 .map(atendimentoMapper::from);
-
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    private Atendimento validarExiste(UUID lookupId) {
+    private Atendimento validarExiste(UUID lookupId) throws SistemaException {
         Optional<Atendimento> opt = atendimentoService.buscarPor(lookupId);
-        if (!opt.isPresent()) {
-            throw new IllegalArgumentException(String.format("Entidade 'Atendimento' de lookupId '%s' não foi encontrada!", lookupId));
+        if (opt.isEmpty()) {
+            throw new SistemaException("Atendimento com o ID " + lookupId + " não foi encontrado.");
         }
         return opt.get();
     }

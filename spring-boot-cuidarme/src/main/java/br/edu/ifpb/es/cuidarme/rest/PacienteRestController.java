@@ -38,7 +38,7 @@ public class PacienteRestController implements PacienteRestControllerApi {
 
     @Override
     @GetMapping("/listar")
-    public ResponseEntity<List<PacienteResponseDTO>> listar() throws SistemaException {
+    public ResponseEntity<List<PacienteResponseDTO>> listar() {
         List<Paciente> objs = pacienteService.recuperarTodos();
         List<PacienteResponseDTO> resultado = objs.stream()
                 .map(pacienteMapper::from)
@@ -105,10 +105,10 @@ public class PacienteRestController implements PacienteRestControllerApi {
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    private Paciente validarExiste(UUID lookupId) {
+    private Paciente validarExiste(UUID lookupId) throws SistemaException {
         Optional<Paciente> opt = pacienteService.buscarPor(lookupId);
-        if (!opt.isPresent()) {
-            throw new IllegalArgumentException(String.format("Entidade 'Paciente' de lookupId '%s' não foi encontrada!", lookupId));
+        if (opt.isEmpty()) {
+            throw new SistemaException("Paciente com o ID " + lookupId + " não foi encontrado.");
         }
         return opt.get();
     }

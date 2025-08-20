@@ -1,12 +1,21 @@
 package br.edu.ifpb.es.cuidarme.mapper;
 
 import br.edu.ifpb.es.cuidarme.model.Paciente;
+import br.edu.ifpb.es.cuidarme.model.Prontuario;
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteSalvarRequestDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteResponseDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Prontuario.ProntuarioResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PacienteMapper {
+
+    @Autowired
+    private ProntuarioMapper prontuarioMapper;
 
     public Paciente from(PacienteSalvarRequestDTO from) {
         Paciente paciente = new Paciente();
@@ -43,6 +52,16 @@ public class PacienteMapper {
         pacienteResponseDTO.setEnderecoTrabalho(from.getEnderecoTrabalho());
         pacienteResponseDTO.setInfoAdicionais(from.getInfoAdicionais());
         pacienteResponseDTO.setContatoEmergencia(from.getContatoEmergencia());
+
+        if (from.getProntuarios() != null) {
+            List<Prontuario> prontuarios = from.getProntuarios();
+
+            List<ProntuarioResponseDTO> prontuariosDTO = prontuarios.stream()
+                    .map(prontuarioMapper::from)
+                    .collect(Collectors.toList());
+
+            pacienteResponseDTO.setProntuarios(prontuariosDTO);
+        }
         return pacienteResponseDTO;
     }
 }

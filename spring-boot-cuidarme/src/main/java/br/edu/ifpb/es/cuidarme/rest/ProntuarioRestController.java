@@ -38,7 +38,7 @@ public class ProntuarioRestController implements ProntuarioRestControllerApi {
 
     @Override
     @GetMapping("/listar")
-    public ResponseEntity<List<ProntuarioResponseDTO>> listar() throws SistemaException {
+    public ResponseEntity<List<ProntuarioResponseDTO>> listar() {
         List<Prontuario> objs = prontuarioService.recuperarTodos();
         List<ProntuarioResponseDTO> resultado = objs.stream()
                 .map(prontuarioMapper::from)
@@ -94,10 +94,10 @@ public class ProntuarioRestController implements ProntuarioRestControllerApi {
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    private Prontuario validarExiste(UUID lookupId) {
+    private Prontuario validarExiste(UUID lookupId) throws SistemaException {
         Optional<Prontuario> opt = prontuarioService.buscarPor(lookupId);
-        if (!opt.isPresent()) {
-            throw new IllegalArgumentException(String.format("Entidade 'Prontuario' de lookupId '%s' não foi encontrada!", lookupId));
+        if (opt.isEmpty()) {
+            throw new SistemaException("Prontuário com o ID " + lookupId + " não foi encontrado.");
         }
         return opt.get();
     }

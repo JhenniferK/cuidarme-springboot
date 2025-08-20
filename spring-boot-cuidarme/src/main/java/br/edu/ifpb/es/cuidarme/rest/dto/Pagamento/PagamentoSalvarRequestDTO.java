@@ -2,6 +2,7 @@ package br.edu.ifpb.es.cuidarme.rest.dto.Pagamento;
 
 import br.edu.ifpb.es.cuidarme.model.Metodo;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,9 +12,9 @@ public class PagamentoSalvarRequestDTO {
 
     @NotBlank
     private int valor;
-    @NotBlank
+    @NotNull
     private LocalDateTime data;
-    @NotBlank
+    @NotNull
     private Metodo metodo;
     @NotBlank
     private String status;

@@ -39,7 +39,7 @@ public class PagamentoRestController implements PagamentoRestControllerApi {
 
     @Override
     @GetMapping("/listar")
-    public ResponseEntity<List<PagamentoResponseDTO>> listar() throws SistemaException {
+    public ResponseEntity<List<PagamentoResponseDTO>> listar() {
         List<Pagamento> objs = pagamentoService.recuperarTodos();
         List<PagamentoResponseDTO> resultado = objs.stream()
                 .map(pagamentoMapper::from)
@@ -97,10 +97,10 @@ public class PagamentoRestController implements PagamentoRestControllerApi {
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    private Pagamento validarExiste(UUID lookupId) {
+    private Pagamento validarExiste(UUID lookupId) throws SistemaException {
         Optional<Pagamento> opt = pagamentoService.buscarPor(lookupId);
-        if (!opt.isPresent()) {
-            throw new IllegalArgumentException(String.format("Entidade 'Pagamento' de lookupId '%s' não foi encontrada!", lookupId));
+        if (opt.isEmpty()) {
+            throw new SistemaException("Pagamento com o ID " + lookupId + " não foi encontrado.");
         }
         return opt.get();
     }

@@ -27,8 +27,7 @@ public interface ProntuarioRestControllerApi {
 
     @Operation(summary = "Retornar todos os prontuarios.",
             description = "Retorna todos os prontuarios que estão armazenados, sem restrição alguma de quantidade.",
-            tags = { "todo" }) // XXX: Com a definição deste atributo "tag" você poderia associar o endpoint definido aqui
-    // em um outro controller. A associação é feita mediante o uso da tag definida no outro controller.
+            tags = { "todo" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Operação realizada com sucesso.",
@@ -120,7 +119,6 @@ public interface ProntuarioRestControllerApi {
             @ApiResponse(responseCode = "200",
                     description = "Operação realizada com sucesso.",
                     content = @Content(mediaType = "application/json",
-                            /*array = @ArraySchema(schema = @Schema(implementation = TodoResponseDTO.class))*/
                             schema = @Schema(implementation = Page.class, contentSchema = ProntuarioResponseDTO.class))),
             @ApiResponse(responseCode = "500",
                     description = "Erro inesperado.",
@@ -128,44 +126,6 @@ public interface ProntuarioRestControllerApi {
                             schema = @Schema(implementation = ProblemDetail.class))),
     })
     ResponseEntity<Page<ProntuarioResponseDTO>> buscar(@ParameterObject ProntuarioBuscarDTO dto) throws SistemaException;
-
-//    @Operation(summary = "Marcar uma tarefa como concluída.",
-//            description = "Marca uma tarefa como concluída, lançando erro caso ela já esteja concluída.")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200",
-//                    description = "Operação realizada com sucesso.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = TodoResponseDTO.class))),
-//            @ApiResponse(responseCode = "400",
-//                    description = "Tarefa com lookupId NÃO encontrada ou tarefa já foi concluída.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = ProblemDetail.class))),
-//            @ApiResponse(responseCode = "500",
-//                    description = "Erro inesperado.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = ProblemDetail.class))),
-//    })
-//    ResponseEntity<TodoResponseDTO> fazerTarefa(@Parameter(description = "LookupId da tarefa a ser marcada como concluída.")
-//                                                UUID lookupId) throws TodoException;
-
-//    @Operation(summary = "Desfazer uma tarefa que foi concluída.",
-//            description = "Desfaz uma tarefa que foi concluída, lançando erro caso ela não tenha sido concluída ainda.")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200",
-//                    description = "Operação realizada com sucesso.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = TodoResponseDTO.class))),
-//            @ApiResponse(responseCode = "400",
-//                    description = "Tarefa com lookupId NÃO encontrada ou tarefa NÃO está marcada como concluída.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = ProblemDetail.class))),
-//            @ApiResponse(responseCode = "500",
-//                    description = "Erro inesperado.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = ProblemDetail.class))),
-//    })
-//    ResponseEntity<TodoResponseDTO> desfazerTarefa(@Parameter(description = "LookupId da tarefa a ser desfeita.")
-//                                                   UUID lookupId) throws TodoException;
 
 }
 

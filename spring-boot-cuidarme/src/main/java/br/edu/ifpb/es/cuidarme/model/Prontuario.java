@@ -49,7 +49,6 @@ public class Prontuario {
     @PrePersist
     public void prePersist() {
         this.lookupId = UUID.randomUUID();
-        this.dataRegistro = LocalDateTime.now();
     }
 
     @Override

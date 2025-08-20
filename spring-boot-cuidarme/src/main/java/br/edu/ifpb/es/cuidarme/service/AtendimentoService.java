@@ -52,9 +52,7 @@ public class AtendimentoService {
 
         atendimento.setData(novaData);
         atendimento.setLocalidade(novaLocalidade);
-
         atendimento.setStatus(StatusAtendimento.AGENDADO);
-
         return repository.save(atendimento);
     }
 

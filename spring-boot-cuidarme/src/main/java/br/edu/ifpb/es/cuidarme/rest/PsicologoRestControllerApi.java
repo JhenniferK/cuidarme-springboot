@@ -97,7 +97,7 @@ public interface PsicologoRestControllerApi {
                                  UUID lookupId) throws SistemaException;
 
     @Operation(summary = "Recuperar psicólogo existentes.",
-            description = "Recupera psicólogos existentes de forma paginada com base nos seguintes filtros opcionais: ativo ou não")
+            description = "Recupera psicólogos existentes.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Operação realizada com sucesso.",

@@ -22,4 +22,5 @@ public class ProntuarioSalvarRequestDTO {
     @NotNull
     @Valid
     private PacienteIdDTO paciente;
+
 }

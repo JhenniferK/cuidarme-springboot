@@ -1,6 +1,5 @@
 package br.edu.ifpb.es.cuidarme.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,10 +27,6 @@ public class PsicologoService {
     public Psicologo validarLogin(String email, String senha) {
         return repository.findByEmailAndSenha(email, senha)
                 .orElseThrow(() -> new RuntimeException("Email ou Senha inválidos"));
-    }
-
-    public List<Psicologo> recuperarTodos() {
-        return repository.findAll();
     }
 
     public Optional<Psicologo> buscarPor(UUID lookupId) {
