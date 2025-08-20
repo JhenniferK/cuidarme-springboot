@@ -1,11 +1,18 @@
 package br.edu.ifpb.es.cuidarme.rest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import br.edu.ifpb.es.cuidarme.exception.SistemaException;
+import br.edu.ifpb.es.cuidarme.mapper.AtendimentoMapper;
+import br.edu.ifpb.es.cuidarme.mapper.PacienteMapper;
 import br.edu.ifpb.es.cuidarme.mapper.PsicologoMapper;
+import br.edu.ifpb.es.cuidarme.model.Atendimento;
+import br.edu.ifpb.es.cuidarme.model.Paciente;
 import br.edu.ifpb.es.cuidarme.model.Psicologo;
+import br.edu.ifpb.es.cuidarme.rest.dto.Atendimento.AtendimentoResponseDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoBuscarDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoLoginRequestDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoResponseDTO;
@@ -36,6 +43,12 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
     @Autowired
     private PsicologoService psicologoService;
 
+    @Autowired
+    private PacienteMapper pacienteMapper;
+
+    @Autowired
+    private AtendimentoMapper atendimentoMapper;
+
     @Override
     @PostMapping("/cadastrar")
     public ResponseEntity<PsicologoResponseDTO> adicionar(@RequestBody @Valid PsicologoSalvarRequestDTO dto) throws SistemaException {
@@ -52,8 +65,30 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
+    @GetMapping("/{lookupId}/pacientes")
+    public ResponseEntity<List<PacienteResponseDTO>> listarPacientesPorPsicologo(@PathVariable UUID lookupId) {
+        Psicologo psicologo = validarExiste(lookupId);
+        List<Paciente> pacientes = psicologo.getPacientes();
+        List<PacienteResponseDTO> resultado = pacientes.stream()
+                .map(pacienteMapper::from)
+                .toList();
+
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+
+    @GetMapping("/{lookupId}/atendimento")
+    public ResponseEntity<List<AtendimentoResponseDTO>> listarAtendimentosPorPsicologo(@PathVariable UUID lookupId) {
+        Psicologo psicologo = validarExiste(lookupId);
+        List<Atendimento> atendimentos = psicologo.getAtendimentos();
+        List<AtendimentoResponseDTO> resultado = atendimentos.stream()
+                .map(atendimentoMapper::from)
+                .toList();
+
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+
     @Override
-    @GetMapping("recuperar/{lookupId}")
+    @GetMapping("/recuperar/{lookupId}")
     public ResponseEntity<PsicologoResponseDTO> recuperarPor(@PathVariable UUID lookupId) throws SistemaException {
         Psicologo obj = validarExiste(lookupId);
         PsicologoResponseDTO resultado = psicologoMapper.from(obj);
@@ -61,7 +96,7 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
     }
 
     @Override
-    @PatchMapping("atualizar/{lookupId}")
+    @PatchMapping("/atualizar/{lookupId}")
     public ResponseEntity<PsicologoResponseDTO> atualizar(@PathVariable UUID lookupId, @RequestBody @Valid PsicologoSalvarRequestDTO dto) throws SistemaException {
         Psicologo objExistente = validarExiste(lookupId);
         objExistente.setNome(dto.getNome());

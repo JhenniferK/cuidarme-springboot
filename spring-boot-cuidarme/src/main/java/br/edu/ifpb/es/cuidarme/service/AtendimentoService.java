@@ -1,10 +1,13 @@
 package br.edu.ifpb.es.cuidarme.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import br.edu.ifpb.es.cuidarme.exception.SistemaException;
 import br.edu.ifpb.es.cuidarme.model.Atendimento;
+import br.edu.ifpb.es.cuidarme.model.StatusAtendimento;
 import br.edu.ifpb.es.cuidarme.repository.AtendimentoRepository;
 import br.edu.ifpb.es.cuidarme.rest.dto.Atendimento.AtendimentoBuscarDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +46,25 @@ public class AtendimentoService {
     }
 
     @Transactional
-    public void remover(Atendimento obj) {
-        repository.delete(obj);
+    public Atendimento remarcar(UUID lookupId, LocalDateTime novaData, String novaLocalidade) {
+        Atendimento atendimento = repository.findByLookupId(lookupId)
+                .orElseThrow(() -> new IllegalArgumentException("Atendimento com lookupId " + lookupId + " não encontrado."));
+
+        atendimento.setData(novaData);
+        atendimento.setLocalidade(novaLocalidade);
+
+        atendimento.setStatus(StatusAtendimento.AGENDADO);
+
+        return repository.save(atendimento);
+    }
+
+    @Transactional
+    public void cancelar(UUID lookupId) throws SistemaException {
+        Atendimento atendimento = repository.findByLookupId(lookupId)
+                .orElseThrow(() -> new SistemaException("Atendimento não encontrado"));
+
+        atendimento.setStatus(StatusAtendimento.CANCELADO);
+        repository.save(atendimento);
     }
 
     public Page<Atendimento> buscar(AtendimentoBuscarDTO dto) {

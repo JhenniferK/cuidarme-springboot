@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> {
+public interface AtendimentoRepository extends JpaRepository<Atendimento, UUID> {
 
     @Query("SELECT a FROM Atendimento a WHERE a.lookupId = :lookupId")
     Optional<Atendimento> findByLookupId(@Param("lookupId") UUID lookupId);

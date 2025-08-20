@@ -2,6 +2,8 @@ package br.edu.ifpb.es.cuidarme.rest.dto.Paciente;
 
 import br.edu.ifpb.es.cuidarme.model.ContatoEmergencia;
 import br.edu.ifpb.es.cuidarme.model.Endereco;
+import br.edu.ifpb.es.cuidarme.model.Psicologo;
+import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoIdDTO;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -24,5 +26,6 @@ public class PacienteResponseDTO {
         private Endereco enderecoTrabalho;
         private String infoAdicionais;
         private ContatoEmergencia contatoEmergencia;
+        private Psicologo psicologo;
 
 }

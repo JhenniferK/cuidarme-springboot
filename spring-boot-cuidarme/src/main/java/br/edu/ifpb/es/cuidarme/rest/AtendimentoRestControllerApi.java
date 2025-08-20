@@ -96,8 +96,8 @@ public interface AtendimentoRestControllerApi {
                                                   @RequestBody(description = "Dados do atendimento a ser atualizado.")
                                                      AtendimentoSalvarRequestDTO dto) throws SistemaException;
 
-    @Operation(summary = "Remover um atendimento existente.",
-            description = "Remove um atendimento existente com base no seu lookupId.")
+    @Operation(summary = "Cancelar um atendimento existente.",
+            description = "Cancela um atendimento existente com base no seu lookupId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
                     description = "Operação realizada com sucesso.",
@@ -111,7 +111,7 @@ public interface AtendimentoRestControllerApi {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ProblemDetail.class))),
     })
-    ResponseEntity<Void> remover(@Parameter(description = "LookupId do atendimento a ser removido.")
+    ResponseEntity<Void> cancelar(@Parameter(description = "LookupId do atendimento a ser cancelado.")
                                  UUID lookupId) throws SistemaException;
 
     @Operation(summary = "Recuperar atendimentos existentes.",

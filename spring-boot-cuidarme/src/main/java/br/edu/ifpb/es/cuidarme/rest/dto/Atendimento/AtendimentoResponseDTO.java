@@ -1,6 +1,7 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Atendimento;
 
 import br.edu.ifpb.es.cuidarme.model.StatusAtendimento;
+import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteResponseDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -14,5 +15,6 @@ public class AtendimentoResponseDTO {
     private LocalDateTime data;
     private String localidade;
     private StatusAtendimento status;
+    private PacienteResponseDTO paciente;
 
 }

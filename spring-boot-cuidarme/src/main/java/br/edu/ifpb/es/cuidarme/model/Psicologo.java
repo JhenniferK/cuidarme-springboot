@@ -1,6 +1,7 @@
 package br.edu.ifpb.es.cuidarme.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.FetchType;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -42,17 +43,17 @@ public class Psicologo {
 
     @Setter
     @Getter
-    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Paciente> pacientes = new ArrayList<>();
 
     @Setter
     @Getter
-    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Atendimento> atendimentos = new ArrayList<>();
 
     @Setter
     @Getter
-    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "psicologo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Prontuario> prontuarios = new ArrayList<>();
 
     @PrePersist
