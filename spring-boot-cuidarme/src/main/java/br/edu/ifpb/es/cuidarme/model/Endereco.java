@@ -1,12 +1,16 @@
 package br.edu.ifpb.es.cuidarme.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Embeddable
 public class Endereco {
 
+    private UUID lookupId;
     private String cep;
     private String logradouro;
     private String numero;
@@ -14,6 +18,14 @@ public class Endereco {
     private String estado;
 
     public Endereco() {
+    }
+
+    public UUID getLookupId() {
+        return lookupId;
+    }
+
+    public void setLookupId(UUID lookupId) {
+        this.lookupId = lookupId;
     }
 
     public String getLogradouro() {
@@ -57,12 +69,12 @@ public class Endereco {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Endereco endereco = (Endereco) o;
-        return Objects.equals(logradouro, endereco.logradouro) && Objects.equals(numero, endereco.numero) && Objects.equals(cep, endereco.cep) && Objects.equals(cidade, endereco.cidade) && Objects.equals(estado, endereco.estado);
+        return Objects.equals(lookupId, endereco.lookupId) && Objects.equals(logradouro, endereco.logradouro) && Objects.equals(numero, endereco.numero) && Objects.equals(cep, endereco.cep) && Objects.equals(cidade, endereco.cidade) && Objects.equals(estado, endereco.estado);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(logradouro, numero, cep, cidade, estado);
+        return Objects.hash(lookupId, logradouro, numero, cep, cidade, estado);
     }
 
     @Override

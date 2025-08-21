@@ -3,6 +3,8 @@ package br.edu.ifpb.es.cuidarme.rest.dto.Paciente;
 import br.edu.ifpb.es.cuidarme.model.ContatoEmergencia;
 import br.edu.ifpb.es.cuidarme.model.Endereco;
 import br.edu.ifpb.es.cuidarme.model.Psicologo;
+import br.edu.ifpb.es.cuidarme.rest.dto.ContatoEmergencia.ContatoEmergenciaDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Endereco.EnderecoDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Prontuario.ProntuarioResponseDTO;
 import lombok.Data;
 import lombok.Getter;
@@ -25,10 +27,10 @@ public class PacienteResponseDTO {
         private String grauInstrucao;
         private String profissao;
         private String telefone;
-        private Endereco enderecoPessoal;
-        private Endereco enderecoTrabalho;
+        private EnderecoDTO enderecoPessoal;
+        private EnderecoDTO enderecoTrabalho;
         private String infoAdicionais;
-        private ContatoEmergencia contatoEmergencia;
+        private ContatoEmergenciaDTO contatoEmergencia;
         private Psicologo psicologo;
         @Getter
         @Setter

@@ -16,6 +16,10 @@ public class PacienteMapper {
 
     @Autowired
     private ProntuarioMapper prontuarioMapper;
+    @Autowired
+    private EnderecoMapper enderecoMapper;
+    @Autowired
+    private ContatoEmergenciaMapper contatoEmergenciaMapper;
 
     public Paciente from(PacienteSalvarRequestDTO from) {
         Paciente paciente = new Paciente();
@@ -28,10 +32,11 @@ public class PacienteMapper {
         paciente.setGrauInstrucao(from.getGrauInstrucao());
         paciente.setProfissao(from.getProfissao());
         paciente.setTelefone(from.getTelefone());
-        paciente.setEnderecoPessoal(from.getEnderecoPessoal());
-        paciente.setEnderecoTrabalho(from.getEnderecoTrabalho());
+        paciente.setEnderecoPessoal(enderecoMapper.from(from.getEnderecoPessoal()));
+        paciente.setEnderecoTrabalho(enderecoMapper.from(from.getEnderecoTrabalho()));
         paciente.setInfoAdicionais(from.getInfoAdicionais());
-        paciente.setContatoEmergencia(from.getContatoEmergencia());
+        paciente.setContatoEmergencia(contatoEmergenciaMapper.from(from.getContatoEmergencia()));
+
         paciente.setPsicologo(from.getPsicologo());
         return paciente;
     }
@@ -48,10 +53,10 @@ public class PacienteMapper {
         pacienteResponseDTO.setGrauInstrucao(from.getGrauInstrucao());
         pacienteResponseDTO.setProfissao(from.getProfissao());
         pacienteResponseDTO.setTelefone(from.getTelefone());
-        pacienteResponseDTO.setEnderecoPessoal(from.getEnderecoPessoal());
-        pacienteResponseDTO.setEnderecoTrabalho(from.getEnderecoTrabalho());
+        pacienteResponseDTO.setEnderecoPessoal(enderecoMapper.from(from.getEnderecoPessoal()));
+        pacienteResponseDTO.setEnderecoTrabalho(enderecoMapper.from(from.getEnderecoTrabalho()));
         pacienteResponseDTO.setInfoAdicionais(from.getInfoAdicionais());
-        pacienteResponseDTO.setContatoEmergencia(from.getContatoEmergencia());
+        pacienteResponseDTO.setContatoEmergencia(contatoEmergenciaMapper.from(from.getContatoEmergencia()));
 
         if (from.getProntuarios() != null) {
             List<Prontuario> prontuarios = from.getProntuarios();

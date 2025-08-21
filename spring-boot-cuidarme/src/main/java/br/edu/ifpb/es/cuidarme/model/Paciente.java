@@ -68,6 +68,7 @@ public class Paciente {
     @Getter
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "lookupId", column = @Column(name = "pessoal_lookup_id")),
             @AttributeOverride(name="cep", column=@Column(name = "CEP_PESSOAL", nullable = false)),
             @AttributeOverride(name="logradouro", column=@Column(name = "LOGRADOURO_PESSOAL", nullable = false)),
             @AttributeOverride(name="numero", column=@Column(name = "NUMERO_PESSOAL")),
@@ -85,6 +86,7 @@ public class Paciente {
     @Getter
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "lookupId", column = @Column(name = "trabalho_lookup_id")),
             @AttributeOverride(name="cep", column=@Column(name = "CEP_TRABALHO")),
             @AttributeOverride(name="logradouro", column=@Column(name = "LOGRADOURO_TRABALHO")),
             @AttributeOverride(name="numero", column=@Column(name = "NUMERO_TRABALHO")),
@@ -103,6 +105,7 @@ public class Paciente {
     @Embedded
     @Column(name = "CONTATO_EMERGENCIA")
     @AttributeOverrides({
+            @AttributeOverride(name = "lookupId", column = @Column(name = "emergencia_lookup_id")),
             @AttributeOverride(name="nome", column=@Column(name = "NOME_CONTATOEMERGENCIA")),
             @AttributeOverride(name="telefone", column =@Column(name = "TELEFONE_CONTATOEMERGENCIA")),
             @AttributeOverride(name="parentesco", column =@Column(name = "PARENTESCO_CONTATOEMERGENCIA"))

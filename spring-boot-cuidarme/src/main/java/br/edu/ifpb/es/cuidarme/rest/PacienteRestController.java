@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import br.edu.ifpb.es.cuidarme.exception.SistemaException;
+import br.edu.ifpb.es.cuidarme.mapper.ContatoEmergenciaMapper;
+import br.edu.ifpb.es.cuidarme.mapper.EnderecoMapper;
 import br.edu.ifpb.es.cuidarme.mapper.PacienteMapper;
 import br.edu.ifpb.es.cuidarme.model.Paciente;
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteBuscarDTO;
@@ -35,6 +37,10 @@ public class PacienteRestController implements PacienteRestControllerApi {
 
     @Autowired
     private PacienteService pacienteService;
+    @Autowired
+    private EnderecoMapper enderecoMapper;
+    @Autowired
+    private ContatoEmergenciaMapper contatoEmergenciaMapper;
 
     @Override
     @GetMapping("/listar")
@@ -76,10 +82,10 @@ public class PacienteRestController implements PacienteRestControllerApi {
         objExistente.setGrauInstrucao(dto.getGrauInstrucao());
         objExistente.setProfissao(dto.getProfissao());
         objExistente.setTelefone(dto.getTelefone());
-        objExistente.setEnderecoPessoal(dto.getEnderecoPessoal());
-        objExistente.setEnderecoTrabalho(dto.getEnderecoTrabalho());
+        objExistente.setEnderecoPessoal(enderecoMapper.from(dto.getEnderecoPessoal()));
+        objExistente.setEnderecoTrabalho(enderecoMapper.from(dto.getEnderecoTrabalho()));
         objExistente.setInfoAdicionais(dto.getInfoAdicionais());
-        objExistente.setContatoEmergencia(dto.getContatoEmergencia());
+        objExistente.setContatoEmergencia(contatoEmergenciaMapper.from(dto.getContatoEmergencia()));
         Paciente objAtualizado = pacienteService.atualizar(objExistente);
         PacienteResponseDTO resultado = pacienteMapper.from(objAtualizado);
 
