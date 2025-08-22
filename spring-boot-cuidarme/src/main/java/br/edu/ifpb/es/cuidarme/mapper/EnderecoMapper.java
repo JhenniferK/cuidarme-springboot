@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class EnderecoMapper {
     public Endereco from (EnderecoDTO from){
         Endereco endereco = new Endereco();
-        endereco.setLookupId(from.getLookupId());
         endereco.setCep(from.getCep());
         endereco.setCidade(from.getCidade());
         endereco.setEstado(from.getEstado());
@@ -19,7 +18,6 @@ public class EnderecoMapper {
 
     public EnderecoDTO from(Endereco from){
         EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setLookupId(from.getLookupId());
         enderecoDTO.setCep(from.getCep());
         enderecoDTO.setCidade(from.getCidade());
         enderecoDTO.setEstado(from.getEstado());

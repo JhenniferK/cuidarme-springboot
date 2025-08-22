@@ -1,6 +1,5 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Psicologo;
 
-import br.edu.ifpb.es.cuidarme.model.Paciente;
 import lombok.Data;
 
 import java.util.UUID;

@@ -36,8 +36,6 @@ public class PacienteMapper {
         paciente.setEnderecoTrabalho(enderecoMapper.from(from.getEnderecoTrabalho()));
         paciente.setInfoAdicionais(from.getInfoAdicionais());
         paciente.setContatoEmergencia(contatoEmergenciaMapper.from(from.getContatoEmergencia()));
-
-        paciente.setPsicologo(from.getPsicologo());
         return paciente;
     }
 

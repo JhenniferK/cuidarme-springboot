@@ -5,16 +5,21 @@ import java.util.Optional;
 import java.util.UUID;
 
 import br.edu.ifpb.es.cuidarme.exception.SistemaException;
-import br.edu.ifpb.es.cuidarme.mapper.ContatoEmergenciaMapper;
-import br.edu.ifpb.es.cuidarme.mapper.EnderecoMapper;
-import br.edu.ifpb.es.cuidarme.mapper.PacienteMapper;
+import br.edu.ifpb.es.cuidarme.mapper.*;
+import br.edu.ifpb.es.cuidarme.model.Atendimento;
 import br.edu.ifpb.es.cuidarme.model.Paciente;
-import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteBuscarDTO;
+import br.edu.ifpb.es.cuidarme.model.Prontuario;
+import br.edu.ifpb.es.cuidarme.model.Psicologo;
+import br.edu.ifpb.es.cuidarme.rest.dto.Atendimento.AtendimentoResponseDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Atendimento.AtendimentoSalvarRequestDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteSalvarRequestDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Prontuario.ProntuarioResponseDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Prontuario.ProntuarioSalvarRequestDTO;
+import br.edu.ifpb.es.cuidarme.service.AtendimentoService;
 import br.edu.ifpb.es.cuidarme.service.PacienteService;
+import br.edu.ifpb.es.cuidarme.service.ProntuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/paciente")
+@RequestMapping("/pacientes")
 public class PacienteRestController implements PacienteRestControllerApi {
 
     @Autowired
@@ -37,10 +42,24 @@ public class PacienteRestController implements PacienteRestControllerApi {
 
     @Autowired
     private PacienteService pacienteService;
+
     @Autowired
     private EnderecoMapper enderecoMapper;
+
     @Autowired
     private ContatoEmergenciaMapper contatoEmergenciaMapper;
+
+    @Autowired
+    private AtendimentoMapper atendimentoMapper;
+
+    @Autowired
+    private AtendimentoService atendimentoService;
+
+    @Autowired
+    private ProntuarioMapper prontuarioMapper;
+
+    @Autowired
+    private ProntuarioService prontuarioService;
 
     @Override
     @GetMapping("/listar")
@@ -49,30 +68,14 @@ public class PacienteRestController implements PacienteRestControllerApi {
         List<PacienteResponseDTO> resultado = objs.stream()
                 .map(pacienteMapper::from)
                 .toList();
+
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
     @Override
-    @PostMapping("/cadastrar")
-    public ResponseEntity<PacienteResponseDTO> adicionar(@RequestBody @Valid PacienteSalvarRequestDTO dto) throws SistemaException {
-        Paciente objNovo = pacienteMapper.from(dto);
-        Paciente objCriado = pacienteService.criar(objNovo);
-        PacienteResponseDTO resultado = pacienteMapper.from(objCriado);
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("buscar/{lookupId}")
-    public ResponseEntity<PacienteResponseDTO> recuperarPor(@PathVariable UUID lookupId) throws SistemaException {
-        Paciente obj = validarExiste(lookupId);
-        PacienteResponseDTO resultado = pacienteMapper.from(obj);
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
-    }
-
-    @Override
-    @PatchMapping("atualizar/{lookupId}")
-    public ResponseEntity<PacienteResponseDTO> atualizar(@PathVariable UUID lookupId, @RequestBody @Valid PacienteSalvarRequestDTO dto) throws SistemaException {
-        Paciente objExistente = validarExiste(lookupId);
+    @PatchMapping("/atualizar/{pacienteId}")
+    public ResponseEntity<PacienteResponseDTO> atualizar(@PathVariable UUID pacienteId, @RequestBody @Valid PacienteSalvarRequestDTO dto) throws SistemaException {
+        Paciente objExistente = validarExiste(pacienteId);
         objExistente.setNome(dto.getNome());
         objExistente.setCpf(dto.getCpf());
         objExistente.setRg(dto.getRg());
@@ -93,20 +96,57 @@ public class PacienteRestController implements PacienteRestControllerApi {
     }
 
     @Override
-    @DeleteMapping("remover/{lookupId}")
-    public ResponseEntity<Void> remover(@PathVariable UUID lookupId) throws SistemaException {
-        Paciente obj = validarExiste(lookupId);
+    @DeleteMapping("/remover/{pacienteId}")
+    public ResponseEntity<Void> remover(@PathVariable UUID pacienteId) throws SistemaException {
+        Paciente obj = validarExiste(pacienteId);
         pacienteService.remover(obj);
+
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    @GetMapping("/buscar")
-    public ResponseEntity<Page<PacienteResponseDTO>> buscar(PacienteBuscarDTO dto) throws SistemaException {
-        Page<Paciente> objs = pacienteService.buscar(dto);
+    @GetMapping("/buscar/{pacienteId}")
+    public ResponseEntity<PacienteResponseDTO> buscarPorId(@PathVariable UUID pacienteId) throws SistemaException {
+        Paciente obj = validarExiste(pacienteId);
+        PacienteResponseDTO resultado = pacienteMapper.from(obj);
 
-        Page<PacienteResponseDTO> resultado = objs
-                .map(pacienteMapper::from);
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+
+    @Override
+    @PostMapping("/cadastrar-atendimentos/{pacienteId}")
+    public ResponseEntity<AtendimentoResponseDTO> adicionarAtendimento (@PathVariable UUID pacienteId, @RequestBody @Valid AtendimentoSalvarRequestDTO dto) throws SistemaException {
+        Paciente paciente = validarExiste(pacienteId);
+        Psicologo psicologo = paciente.getPsicologo();
+        Atendimento novoAtendimento = atendimentoMapper.from(dto);
+        novoAtendimento.setPaciente(paciente);
+        novoAtendimento.setPsicologo(psicologo);
+        Atendimento atendimentoCriado = atendimentoService.criar(novoAtendimento);
+        AtendimentoResponseDTO resultado = atendimentoMapper.from(atendimentoCriado);
+
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+
+    @Override
+    @GetMapping("/atendimentos/{pacienteId}")
+    public ResponseEntity<List<AtendimentoResponseDTO>> listarAtendimentosPorPaciente(@PathVariable UUID pacienteId) throws SistemaException {
+        Paciente paciente = validarExiste(pacienteId);
+        List<Atendimento> atendimentos = paciente.getAtendimentos();
+        List<AtendimentoResponseDTO> resultado = atendimentos.stream()
+                .map(atendimentoMapper::from)
+                .toList();
+
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+
+    @Override
+    @PostMapping("/cadastrar-prontuarios/{pacienteId}")
+    public ResponseEntity<ProntuarioResponseDTO> adicionarProntuario(@PathVariable UUID pacienteId, @RequestBody @Valid ProntuarioSalvarRequestDTO dto) throws SistemaException {
+        Paciente paciente = validarExiste(pacienteId);
+        Prontuario novoProntuario = prontuarioMapper.from(dto);
+        novoProntuario.setPaciente(paciente);
+        Prontuario prontuarioCriado = prontuarioService.criar(novoProntuario);
+        ProntuarioResponseDTO resultado = prontuarioMapper.from(prontuarioCriado);
 
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }

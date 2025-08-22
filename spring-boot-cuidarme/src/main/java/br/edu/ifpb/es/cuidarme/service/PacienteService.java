@@ -34,6 +34,7 @@ public class PacienteService {
                 .lookupId(lookupId)
                 .build();
         Example<Paciente> exemplo = Example.of(objExemplo);
+
         return repository.findOne(exemplo);
     }
 

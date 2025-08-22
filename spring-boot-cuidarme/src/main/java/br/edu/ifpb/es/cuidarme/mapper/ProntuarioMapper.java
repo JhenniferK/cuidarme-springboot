@@ -25,19 +25,14 @@ public class ProntuarioMapper {
 
     public Prontuario from(ProntuarioSalvarRequestDTO from) {
         var pacienteId = from.getPaciente().getLookupId();
-        var psicologoId = from.getPsicologo().getLookupId();
 
         Paciente paciente = pacienteService.buscarPor(pacienteId)
                 .orElseThrow(() -> new IllegalArgumentException("Paciente com lookupId " + pacienteId + " não encontrado."));
-
-        Psicologo psicologo = psicologoService.buscarPor(psicologoId)
-                .orElseThrow(() -> new IllegalArgumentException("Psicólogo com lookupId " + psicologoId + " não encontrado."));
 
         Prontuario prontuario = new Prontuario();
         prontuario.setDescricao(from.getDescricao());
         prontuario.setDataRegistro(LocalDateTime.from(from.getDataRegistro()));
         prontuario.setPaciente(paciente);
-        prontuario.setPsicologo(psicologo);
         return prontuario;
     }
 
@@ -58,7 +53,6 @@ public class ProntuarioMapper {
             Psicologo psicologo = from.getPsicologo();
             PsicologoIdDTO psicologoIdDTO = new PsicologoIdDTO();
             psicologoIdDTO.setLookupId(psicologo.getLookupId());
-            prontuario.setPsicologoIdDTO(psicologoIdDTO);
         }
 
         return prontuario;

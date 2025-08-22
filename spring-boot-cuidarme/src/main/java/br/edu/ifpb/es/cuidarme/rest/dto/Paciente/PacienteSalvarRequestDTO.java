@@ -1,8 +1,5 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Paciente;
 
-import br.edu.ifpb.es.cuidarme.model.ContatoEmergencia;
-import br.edu.ifpb.es.cuidarme.model.Endereco;
-import br.edu.ifpb.es.cuidarme.model.Psicologo;
 import br.edu.ifpb.es.cuidarme.rest.dto.ContatoEmergencia.ContatoEmergenciaDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Endereco.EnderecoDTO;
 import jakarta.validation.constraints.NotBlank;
@@ -36,11 +33,9 @@ public class PacienteSalvarRequestDTO {
     private EnderecoDTO enderecoPessoal;
     @NotNull
     private EnderecoDTO enderecoTrabalho;
-
+    @NotNull
     private String infoAdicionais;
-
+    @NotNull
     private ContatoEmergenciaDTO contatoEmergencia;
-
-    private Psicologo psicologo;
 
 }

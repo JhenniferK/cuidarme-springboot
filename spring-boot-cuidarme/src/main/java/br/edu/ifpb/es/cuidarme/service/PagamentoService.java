@@ -34,6 +34,7 @@ public class PagamentoService {
                 .lookupId(lookupId)
                 .build();
         Example<Pagamento> exemplo = Example.of(objExemplo);
+
         return repository.findOne(exemplo);
     }
 

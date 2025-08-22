@@ -51,6 +51,12 @@ public class Pagamento {
     @JoinColumn(name = "PACIENTE_ID")
     private Paciente paciente;
 
+    @Setter
+    @Getter
+    @OneToOne
+    @JoinColumn(name = "ATENDIMENTO_ID")
+    private Atendimento atendimento;
+
     @PrePersist
     public void prePersist() {
         this.lookupId = UUID.randomUUID();

@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import br.edu.ifpb.es.cuidarme.exception.SistemaException;
-import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoBuscarDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Pagamento.PagamentoSalvarRequestDTO;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 
@@ -26,52 +23,36 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface PagamentoRestControllerApi {
 
     @Operation(summary = "Retornar todos os pagamentos.",
-            description = "Retorna todos os pagamentos que estão armazenados, sem restrição alguma de quantidade.",
-            tags = { "todo" })
+               description = "Retorna todos os pagamentos que estão armazenados, sem restrição alguma de quantidade.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Operação realizada com sucesso.",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = PagamentoResponseDTO.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = PagamentoResponseDTO.class)))),
             @ApiResponse(responseCode = "500",
                     description = "Erro inesperado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
     })
     ResponseEntity<List<PagamentoResponseDTO>> listar() throws SistemaException;
 
-    @Operation(summary = "Adicionar um pagamento.",
-            description = "Adicionar um novo pagamento.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Operação realizada com sucesso.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PagamentoResponseDTO.class))),
-            @ApiResponse(responseCode = "500",
-                    description = "Erro inesperado.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
-    })
-    ResponseEntity<PagamentoResponseDTO> adicionar(@RequestBody(description = "Dados do pagamento a ser adicionado.")
-                                                     PagamentoSalvarRequestDTO dto) throws SistemaException;
-
-    @Operation(summary = "Recuperar um pagamento existente.",
+    @Operation(summary = "Buscar um pagamento existente.",
             description = "Recuper um pagamento existente com base no seu lookupId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Operação realizada com sucesso.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PagamentoResponseDTO.class))),
+                    schema = @Schema(implementation = PagamentoResponseDTO.class))),
             @ApiResponse(responseCode = "400",
                     description = "Pagamento com lookupId não encontrado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "500",
                     description = "Erro inesperado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
     })
-    ResponseEntity<PagamentoResponseDTO> recuperarPor(@Parameter(description = "LookupId do pagamento a ser recuperado.")
+    ResponseEntity<PagamentoResponseDTO> buscarPor(@Parameter(description = "LookupId do pagamento a ser recuperado.")
                                                         UUID lookupId) throws SistemaException;
 
     @Operation(summary = "Atualizar dados de um pagamento existente.",
@@ -80,15 +61,15 @@ public interface PagamentoRestControllerApi {
             @ApiResponse(responseCode = "200",
                     description = "Operação realizada com sucesso.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PagamentoResponseDTO.class))),
+                    schema = @Schema(implementation = PagamentoResponseDTO.class))),
             @ApiResponse(responseCode = "400",
                     description = "Pagamento com lookupId não encontrado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "500",
                     description = "Erro inesperado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
     })
     ResponseEntity<PagamentoResponseDTO> atualizar(@Parameter(description = "LookupId do pagamento a ser atualizado.")
                                                      UUID lookupId,
@@ -104,28 +85,13 @@ public interface PagamentoRestControllerApi {
             @ApiResponse(responseCode = "400",
                     description = "Pagamento com lookupId não encontrado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "500",
                     description = "Erro inesperado.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
+                    schema = @Schema(implementation = ProblemDetail.class))),
     })
     ResponseEntity<Void> remover(@Parameter(description = "LookupId do pagamento a ser removido.")
                                  UUID lookupId) throws SistemaException;
-
-    @Operation(summary = "Recuperar pagamentos existentes.",
-            description = "Recupera pagamentos existentes de forma paginada com base nos seguintes filtros opcionais: ativo ou não")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Operação realizada com sucesso.",
-                    content = @Content(mediaType = "application/json",
-                            /*array = @ArraySchema(schema = @Schema(implementation = TodoResponseDTO.class))*/
-                            schema = @Schema(implementation = Page.class, contentSchema = PagamentoResponseDTO.class))),
-            @ApiResponse(responseCode = "500",
-                    description = "Erro inesperado.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class))),
-    })
-    ResponseEntity<Page<PagamentoResponseDTO>> buscar(@ParameterObject PagamentoBuscarDTO dto) throws SistemaException;
 
 }

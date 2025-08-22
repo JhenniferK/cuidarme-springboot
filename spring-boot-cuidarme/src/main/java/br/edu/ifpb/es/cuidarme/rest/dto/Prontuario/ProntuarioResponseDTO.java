@@ -1,7 +1,6 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Prontuario;
 
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteIdDTO;
-import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoIdDTO;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +17,5 @@ public class ProntuarioResponseDTO {
     @Getter
     @Setter
     private PacienteIdDTO pacienteIdDTO;
-    @Getter
-    @Setter
-    private PsicologoIdDTO psicologoIdDTO;
 
 }

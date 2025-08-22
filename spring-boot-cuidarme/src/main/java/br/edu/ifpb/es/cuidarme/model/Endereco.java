@@ -1,8 +1,6 @@
 package br.edu.ifpb.es.cuidarme.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 import java.util.UUID;

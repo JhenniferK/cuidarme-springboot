@@ -1,7 +1,6 @@
 package br.edu.ifpb.es.cuidarme.rest.dto.Pagamento;
 
 import br.edu.ifpb.es.cuidarme.model.Metodo;
-import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteIdDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,7 +19,5 @@ public class PagamentoSalvarRequestDTO {
     private Metodo metodo;
     @NotBlank
     private String status;
-    @NotNull
-    private PacienteIdDTO paciente;
 
 }

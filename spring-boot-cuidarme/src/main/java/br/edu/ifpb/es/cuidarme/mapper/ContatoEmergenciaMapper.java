@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class ContatoEmergenciaMapper {
     public ContatoEmergencia from (ContatoEmergenciaDTO from){
         ContatoEmergencia contatoEmergencia = new ContatoEmergencia();
-        contatoEmergencia.setLookupId(from.getLookupId());
         contatoEmergencia.setNome(from.getNome());
         contatoEmergencia.setParentesco(from.getParentesco());
         contatoEmergencia.setTelefone(from.getTelefone());
@@ -16,7 +15,6 @@ public class ContatoEmergenciaMapper {
     }
     public ContatoEmergenciaDTO from (ContatoEmergencia from) {
         ContatoEmergenciaDTO contatoEmergenciaDTO = new ContatoEmergenciaDTO();
-        contatoEmergenciaDTO.setLookupId(from.getLookupId());
         contatoEmergenciaDTO.setNome(from.getNome());
         contatoEmergenciaDTO.setParentesco(from.getParentesco());
         contatoEmergenciaDTO.setTelefone(from.getTelefone());

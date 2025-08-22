@@ -34,6 +34,7 @@ public class ProntuarioService {
                 .lookupId(lookupId)
                 .build();
         Example<Prontuario> exemplo = Example.of(objExemplo);
+
         return repository.findOne(exemplo);
     }
 

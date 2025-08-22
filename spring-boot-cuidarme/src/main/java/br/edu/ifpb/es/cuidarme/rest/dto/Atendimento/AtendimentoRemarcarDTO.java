@@ -15,4 +15,5 @@ public class AtendimentoRemarcarDTO {
 
     @NotBlank
     private String localidade;
+
 }

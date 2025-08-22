@@ -24,16 +24,12 @@ public class PsicologoService {
         return repository.save(obj);
     }
 
-    public Psicologo validarLogin(String email, String senha) {
-        return repository.findByEmailAndSenha(email, senha)
-                .orElseThrow(() -> new RuntimeException("Email ou Senha inválidos"));
-    }
-
     public Optional<Psicologo> buscarPor(UUID lookupId) {
         Psicologo objExemplo = Psicologo.builder()
                 .lookupId(lookupId)
                 .build();
         Example<Psicologo> exemplo = Example.of(objExemplo);
+
         return repository.findOne(exemplo);
     }
 

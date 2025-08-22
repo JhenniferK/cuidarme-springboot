@@ -3,7 +3,6 @@ package br.edu.ifpb.es.cuidarme.rest;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import br.edu.ifpb.es.cuidarme.exception.SistemaException;
 import br.edu.ifpb.es.cuidarme.mapper.AtendimentoMapper;
@@ -14,13 +13,12 @@ import br.edu.ifpb.es.cuidarme.model.Paciente;
 import br.edu.ifpb.es.cuidarme.model.Psicologo;
 import br.edu.ifpb.es.cuidarme.rest.dto.Atendimento.AtendimentoResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteResponseDTO;
-import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoBuscarDTO;
-import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoLoginRequestDTO;
+import br.edu.ifpb.es.cuidarme.rest.dto.Paciente.PacienteSalvarRequestDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoResponseDTO;
 import br.edu.ifpb.es.cuidarme.rest.dto.Psicologo.PsicologoSalvarRequestDTO;
+import br.edu.ifpb.es.cuidarme.service.PacienteService;
 import br.edu.ifpb.es.cuidarme.service.PsicologoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/psicologo")
+@RequestMapping("/psicologos")
 public class PsicologoRestController implements PsicologoRestControllerApi {
 
     @Autowired
@@ -43,6 +41,9 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
 
     @Autowired
     private PsicologoService psicologoService;
+
+    @Autowired
+    private PacienteService pacienteService;
 
     @Autowired
     private PacienteMapper pacienteMapper;
@@ -56,19 +57,26 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
         Psicologo objNovo = psicologoMapper.from(dto);
         Psicologo objCriado = psicologoService.criar(objNovo);
         PsicologoResponseDTO resultado = psicologoMapper.from(objCriado);
+
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<PsicologoResponseDTO> login(@RequestBody PsicologoLoginRequestDTO loginRequest) {
-        Psicologo psicologo = psicologoService.validarLogin(loginRequest.getEmail(), loginRequest.getSenha());
-        PsicologoResponseDTO resultado = psicologoMapper.from(psicologo);
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
+    @Override
+    @PostMapping("/cadastrar-pacientes/{psicologoId}")
+    public ResponseEntity<PacienteResponseDTO> adicionarPaciente(@PathVariable UUID psicologoId, @RequestBody @Valid PacienteSalvarRequestDTO dto) throws SistemaException {
+        Psicologo psicologo = validarExiste(psicologoId);
+        Paciente novoPaciente = pacienteMapper.from(dto);
+        novoPaciente.setPsicologo(psicologo);
+        Paciente pacienteCriado = pacienteService.criar(novoPaciente);
+        PacienteResponseDTO resultado = pacienteMapper.from(pacienteCriado);
+
+        return new ResponseEntity<>(resultado, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{lookupId}/pacientes")
-    public ResponseEntity<List<PacienteResponseDTO>> listarPacientesPorPsicologo(@PathVariable UUID lookupId) throws SistemaException {
-        Psicologo psicologo = validarExiste(lookupId);
+    @Override
+    @GetMapping("/pacientes/{psicologoId}")
+    public ResponseEntity<List<PacienteResponseDTO>> listarPacientesPorPsicologo(@PathVariable UUID psicologoId) throws SistemaException {
+        Psicologo psicologo = validarExiste(psicologoId);
         List<Paciente> pacientes = psicologo.getPacientes();
         List<PacienteResponseDTO> resultado = pacientes.stream()
                 .map(pacienteMapper::from)
@@ -77,9 +85,10 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
         return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
-    @GetMapping("/{lookupId}/atendimento")
-    public ResponseEntity<List<AtendimentoResponseDTO>> listarAtendimentosPorPsicologo(@PathVariable UUID lookupId) throws SistemaException {
-        Psicologo psicologo = validarExiste(lookupId);
+    @Override
+    @GetMapping("/atendimentos/{psicologoId}")
+    public ResponseEntity<List<AtendimentoResponseDTO>> listarAtendimentosPorPsicologo(@PathVariable UUID psicologoId) throws SistemaException {
+        Psicologo psicologo = validarExiste(psicologoId);
         List<Atendimento> atendimentos = psicologo.getAtendimentos();
         List<AtendimentoResponseDTO> resultado = atendimentos.stream()
                 .map(atendimentoMapper::from)
@@ -89,17 +98,9 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
     }
 
     @Override
-    @GetMapping("/recuperar/{lookupId}")
-    public ResponseEntity<PsicologoResponseDTO> recuperarPor(@PathVariable UUID lookupId) throws SistemaException {
-        Psicologo obj = validarExiste(lookupId);
-        PsicologoResponseDTO resultado = psicologoMapper.from(obj);
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
-    }
-
-    @Override
-    @PatchMapping("/atualizar/{lookupId}")
-    public ResponseEntity<PsicologoResponseDTO> atualizar(@PathVariable UUID lookupId, @RequestBody @Valid PsicologoSalvarRequestDTO dto) throws SistemaException {
-        Psicologo objExistente = validarExiste(lookupId);
+    @PatchMapping("/atualizar/{psicologoId}")
+    public ResponseEntity<PsicologoResponseDTO> atualizar(@PathVariable UUID psicologoId, @RequestBody @Valid PsicologoSalvarRequestDTO dto) throws SistemaException {
+        Psicologo objExistente = validarExiste(psicologoId);
         objExistente.setNome(dto.getNome());
         objExistente.setEmail(dto.getEmail());
         objExistente.setSenha(dto.getSenha());
@@ -110,32 +111,12 @@ public class PsicologoRestController implements PsicologoRestControllerApi {
     }
 
     @Override
-    @DeleteMapping("remover/{lookupId}")
-    public ResponseEntity<Void> remover(@PathVariable UUID lookupId) throws SistemaException {
-        Psicologo obj = validarExiste(lookupId);
+    @DeleteMapping("/remover/{psicologoId}")
+    public ResponseEntity<Void> remover(@PathVariable UUID psicologoId) throws SistemaException {
+        Psicologo obj = validarExiste(psicologoId);
         psicologoService.remover(obj);
+
         return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    @GetMapping("/buscar")
-    public ResponseEntity<Page<PsicologoResponseDTO>> buscar(PsicologoBuscarDTO dto) throws SistemaException {
-        Page<Psicologo> objs = psicologoService.buscar(dto);
-
-        Page<PsicologoResponseDTO> resultado = objs
-                .map(psicologoMapper::from);
-
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
-    }
-
-    @GetMapping("/{lookupId}/pacientes-com-prontuarios")
-    public ResponseEntity<List<PacienteResponseDTO>> listarPacientesComProntuarios(@PathVariable UUID lookupId) throws SistemaException {
-        Psicologo psicologo = validarExiste(lookupId);
-        List<Paciente> pacientes = psicologo.getPacientes();
-        List<PacienteResponseDTO> resultado = pacientes.stream()
-                .map(pacienteMapper::from)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
     private Psicologo validarExiste(UUID lookupId) throws SistemaException {

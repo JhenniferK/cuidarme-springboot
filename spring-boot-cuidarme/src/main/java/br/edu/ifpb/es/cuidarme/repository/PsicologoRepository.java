@@ -26,11 +26,4 @@ public interface PsicologoRepository extends JpaRepository<Psicologo, UUID> {
     """)
     Page<Psicologo> buscarPor(@Param("dto") PsicologoBuscarDTO dto, Pageable pageable);
 
-    @Query("""
-        SELECT p FROM Psicologo p
-        WHERE LOWER(p.email) = LOWER(:email)
-          AND p.senha = :senha
-    """)
-    Optional<Psicologo> findByEmailAndSenha(@Param("email") String email, @Param("senha") String senha);
-
 }

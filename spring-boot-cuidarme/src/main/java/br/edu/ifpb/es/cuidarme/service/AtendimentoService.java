@@ -37,32 +37,13 @@ public class AtendimentoService {
                 .lookupId(lookupId)
                 .build();
         Example<Atendimento> exemplo = Example.of(objExemplo);
+
         return repository.findOne(exemplo);
     }
 
     @Transactional
     public Atendimento atualizar(Atendimento obj) {
         return repository.save(obj);
-    }
-
-    @Transactional
-    public Atendimento remarcar(UUID lookupId, LocalDateTime novaData, String novaLocalidade) {
-        Atendimento atendimento = repository.findByLookupId(lookupId)
-                .orElseThrow(() -> new IllegalArgumentException("Atendimento com lookupId " + lookupId + " não encontrado."));
-
-        atendimento.setData(novaData);
-        atendimento.setLocalidade(novaLocalidade);
-        atendimento.setStatus(StatusAtendimento.AGENDADO);
-        return repository.save(atendimento);
-    }
-
-    @Transactional
-    public void cancelar(UUID lookupId) throws SistemaException {
-        Atendimento atendimento = repository.findByLookupId(lookupId)
-                .orElseThrow(() -> new SistemaException("Atendimento não encontrado"));
-
-        atendimento.setStatus(StatusAtendimento.CANCELADO);
-        repository.save(atendimento);
     }
 
     public Page<Atendimento> buscar(AtendimentoBuscarDTO dto) {
